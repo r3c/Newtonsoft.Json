@@ -8076,6 +8076,16 @@ This is just junk, though.";
             Assert.AreEqual(150, depth);
         }
 
+        [Test]
+        public void DeserializeProperty_InitializerValueUntouched()
+        {
+            Assert.AreEqual(0, RecordWithInitializer.Default.Value);
+
+            JsonConvert.DeserializeObject<ContainerForRecordWithInitializer>(@"{""field"": {""value"": 1}}");
+
+            Assert.AreEqual(0, RecordWithInitializer.Default.Value); // Fails because of issue #2451: Value is now equal to 1
+        }
+
         private static int GetDepth(JToken o)
         {
             int depth = 1;
